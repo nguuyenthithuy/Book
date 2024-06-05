@@ -7,6 +7,7 @@ import Header from "./components/Header";
 
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import Register from "./pages/register";
 const Layout = () => {
   return (
     <>
@@ -38,6 +39,10 @@ export default function App() {
     {
       path: "/login",
       element: <LoginPage />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
     },
   ]);
   return (
