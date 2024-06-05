@@ -1,11 +1,38 @@
-import React from "react";
-import { Button, Checkbox, Divider, Form, Input } from "antd";
+import React, { useState } from "react";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  message,
+  notification,
+} from "antd";
 import "./Register.scss";
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-
+import { callRegister } from "../../services/api";
+import { Link, useNavigate } from "react-router-dom";
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    const { fullName, email, password, phone } = values;
+    setIsLoading(true);
+    const res = await callRegister(fullName, email, password, phone);
+    setIsLoading(false);
+    console.log(res);
+    if (res?.data?._id) {
+      message.success("Đăng kí tài khoản thành công");
+      navigate("/login");
+    } else {
+      notification.error({
+        message: "Có lỗi xảy ra",
+        description:
+          res.message && res.message.length > 0 ? res.message[0] : res.message,
+        duration: 5,
+      });
+    }
+  };
+
   return (
     <>
       <div className="register__page">
@@ -25,8 +52,8 @@ const Register = () => {
             >
               <Form.Item
                 labelCol={{ span: 24 }}
-                label="Username"
-                name="username"
+                label="FullName"
+                name="fullName"
                 rules={[
                   { required: true, message: "Please input your username!" },
                 ]}
@@ -68,10 +95,17 @@ const Register = () => {
               </Form.Item>
 
               <Form.Item>
-                <Button type="primary" htmlType="submit" loading={false}>
+                <Button type="primary" htmlType="submit" loading={isLoading}>
                   Đăng kí
                 </Button>
               </Form.Item>
+              <Divider>Or</Divider>
+              <p className="text text-normal">
+                Đã có tài khoản ?
+                <span>
+                  <Link to="/login"> Đăng Nhập </Link>
+                </span>
+              </p>
             </Form>
           </section>
         </main>
