@@ -24,11 +24,31 @@ const Layout = () => {
     </>
   );
 };
+const LayoutAdmin = () => {
+  const isAdminRole = window.location.pathname.startsWith("/admin");
+  const user = useSelector((state) => state.account.user);
+  const userRole = user.role;
+
+  return (
+    <>
+      <div className="layout-app">
+        {isAdminRole && userRole === "ADMIN" && <Header />}
+        <Outlet />
+        {isAdminRole && userRole === "ADMIN" && <Footer />}
+      </div>
+    </>
+  );
+};
 export default function App() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const dispatch = useDispatch();
   const getAcccount = async () => {
-    if (window.location.pathname === "/login") return;
+    if (
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/register" ||
+      window.location.pathname === "/"
+    )
+      return;
     const res = await callFetchAccount();
     console.log("check res", res);
     if (res && res.data) {
@@ -59,7 +79,7 @@ export default function App() {
     },
     {
       path: "/admin",
-      element: <Layout />,
+      element: <LayoutAdmin />,
       errorElement: <NotFound />,
 
       children: [
@@ -92,7 +112,10 @@ export default function App() {
   ]);
   return (
     <>
-      {isAuthenticated === true || window.location.pathname === "/login" ? (
+      {isAuthenticated === true ||
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/register" ||
+      window.location.pathname === "/" ? (
         <RouterProvider router={router} />
       ) : (
         <Loading />
