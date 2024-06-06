@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/login";
 import ContactPage from "./pages/contact";
@@ -8,6 +8,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Register from "./pages/register";
+import { callFetchAccount } from "./services/api";
+import { useDispatch } from "react-redux";
+import { doGetAccountAction } from "./redux/account/accountSlice";
 const Layout = () => {
   return (
     <>
@@ -18,6 +21,18 @@ const Layout = () => {
   );
 };
 export default function App() {
+  const dispatch = useDispatch();
+  const getAcccount = async () => {
+    const res = await callFetchAccount();
+    console.log("check res", res);
+    if (res && res.data) {
+      dispatch(doGetAccountAction(res.data));
+    }
+  };
+  useEffect(() => {
+    getAcccount();
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
