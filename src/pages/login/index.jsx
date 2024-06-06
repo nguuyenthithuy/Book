@@ -19,6 +19,8 @@ const Login = () => {
     const res = await callLogin(username, password);
     console.log(res);
     if (res && res.data) {
+      console.log("check res", res);
+      localStorage.setItem("access_token", res.data.access_token);
       message.success("Đăng nhập thành công");
       navigate("/");
     } else {
