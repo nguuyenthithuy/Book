@@ -15,6 +15,7 @@ import Loading from "./components/Loading";
 import NotFound from "./components/Notfound";
 import AdminPage from "./pages/admin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LayoutAdmin from "./components/admin/Layoutadmin";
 const Layout = () => {
   return (
     <>
@@ -24,29 +25,28 @@ const Layout = () => {
     </>
   );
 };
-const LayoutAdmin = () => {
-  const isAdminRole = window.location.pathname.startsWith("/admin");
-  const user = useSelector((state) => state.account.user);
-  const userRole = user.role;
+// const LayoutAdmin = () => {
+//   const isAdminRole = window.location.pathname.startsWith("/admin");
+//   const user = useSelector((state) => state.account.user);
+//   const userRole = user.role;
 
-  return (
-    <>
-      <div className="layout-app">
-        {isAdminRole && userRole === "ADMIN" && <Header />}
-        <Outlet />
-        {isAdminRole && userRole === "ADMIN" && <Footer />}
-      </div>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <div className="layout-app">
+//         {isAdminRole && userRole === "ADMIN" && <Header />}
+//         <Outlet />
+//         {isAdminRole && userRole === "ADMIN" && <Footer />}
+//       </div>
+//     </>
+//   );
+// };
 export default function App() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const dispatch = useDispatch();
   const getAcccount = async () => {
     if (
       window.location.pathname === "/login" ||
-      window.location.pathname === "/register" ||
-      window.location.pathname === "/"
+      window.location.pathname === "/register"
     )
       return;
     const res = await callFetchAccount();
