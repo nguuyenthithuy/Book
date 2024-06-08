@@ -10,6 +10,7 @@ const initialState = {
     avatar: "",
     id: "",
   },
+  isLoading: true,
 };
 
 export const accountSlice = createSlice({
@@ -24,7 +25,8 @@ export const accountSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload;
+      state.isLoading = false;
     },
     doGetAccountAction: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -33,6 +35,23 @@ export const accountSlice = createSlice({
       // immutable state based off those changes
       state.isAuthenticated = true;
       state.user = action.payload.user;
+      state.isLoading = false;
+    },
+    doLogOutAction: (state, action) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      localStorage.removeItem("access_token");
+      state.isAuthenticated = false;
+      state.user = {
+        email: "",
+        phone: "",
+        fullName: "",
+        role: "",
+        avatar: "",
+        id: "",
+      };
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -40,6 +59,7 @@ export const accountSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { doLoginAction, doGetAccountAction } = accountSlice.actions;
+export const { doLoginAction, doGetAccountAction, doLogOutAction } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;
