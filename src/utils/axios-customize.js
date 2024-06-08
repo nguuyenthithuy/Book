@@ -58,6 +58,14 @@ instance.interceptors.response.use(
       handleRefreshToken();
       return instance.request(error.config);
     }
+    if (
+      error.config &&
+      error.response &&
+      +error.response.status === 400 &&
+      error.config.url === "api/v1/auth/refresh"
+    ) {
+      window.location.href = "/login";
+    }
 
     return error?.response?.data ?? Promise.reject(error);
   }
