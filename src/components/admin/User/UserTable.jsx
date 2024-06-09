@@ -26,7 +26,7 @@ const UserTable = () => {
     },
   ];
 
-  const data = [
+  let data = [
     {
       key: "1",
       name: "John Brown",
@@ -56,6 +56,8 @@ const UserTable = () => {
       english: 89,
     },
   ];
+  data = data.concat(data).concat(data).concat(data);
+  data = data.concat(data);
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
@@ -68,6 +70,7 @@ const UserTable = () => {
         </Col>
         <Col span={24}>
           <Table
+            pagination={{ current: 1, pageSize: 1, showSizeChanger: true }}
             className="def"
             columns={columns}
             dataSource={data}
