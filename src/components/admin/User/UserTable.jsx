@@ -9,19 +9,24 @@ const UserTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(2);
   const [total, setTotal] = useState(0);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUser();
   }, [current, pageSize]);
 
-  const fetchUser = async () => {
-    const query = `current=${current}&pageSize=${pageSize}`;
+  const fetchUser = async (searchFilter) => {
+    let query = `current=${current}&pageSize=${pageSize}`;
+    if (searchFilter) {
+      query += `&${searchFilter}`;
+    }
     const res = await callListUser(query);
     // console.log(res);
     if (res && res.data) {
       setListUser(res.data.result);
       setTotal(res.data.meta.total);
     }
+    setLoading(false);
   };
   console.log(listUser);
 
@@ -64,14 +69,19 @@ const UserTable = () => {
     }
     if (pagination && pagination.pageSize !== pageSize) {
       setPageSize(pagination.pageSize);
+      setCurrent(1);
     }
     console.log("params", pagination, filters, sorter, extra);
+  };
+
+  const handleSearch = (query) => {
+    fetchUser(query);
   };
   return (
     <>
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <InputSearch />
+          <InputSearch handleSearch={handleSearch} />
         </Col>
         <Col span={24}>
           <Table
@@ -85,6 +95,7 @@ const UserTable = () => {
             columns={columns}
             dataSource={listUser}
             onChange={onChange}
+            loading={isLoading}
           />
         </Col>
       </Row>
