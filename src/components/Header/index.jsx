@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { VscSearchFuzzy } from "react-icons/vsc";
-import { Divider, Badge, Drawer, message } from "antd";
+import { Divider, Badge, Drawer, message, Avatar } from "antd";
 import "./header.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
@@ -27,7 +27,7 @@ const Header = () => {
       navigate("/");
     }
   };
-  const items = [
+  let items = [
     {
       label: <label>Quản lý tài khoản</label>,
       key: "account",
@@ -44,7 +44,19 @@ const Header = () => {
       key: "logout",
     },
   ];
-
+  if (user.role === "ADMIN") {
+    items.unshift({
+      label: (
+        <label style={{ cursor: "pointer" }} onClick={() => navigate("/admin")}>
+          Trang quản trị
+        </label>
+      ),
+      key: "logout",
+    });
+  }
+  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+    user?.avatar
+  }`;
   return (
     <>
       <div className="header-container">
@@ -87,7 +99,8 @@ const Header = () => {
                   <Dropdown menu={{ items }} trigger={["click"]}>
                     <a onClick={(e) => e.preventDefault()}>
                       <Space>
-                        Welcome {user?.fullName}
+                        <Avatar src={urlAvatar} />
+                        {user?.fullName}
                         <DownOutlined />
                       </Space>
                     </a>

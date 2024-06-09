@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "antd";
+import { Button, Col, Row, Table } from "antd";
 import InputSearch from "./InputSearch";
 import { render } from "react-dom";
 import { callListUser } from "../../../services/api";
 import UserViewDetail from "./UserViewDetail";
-
+import {
+  CloudUploadOutlined,
+  DeleteTwoTone,
+  ExportOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 const UserTable = () => {
   const [listUser, setListUser] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -111,6 +117,41 @@ const UserTable = () => {
   const handleSearch = (query) => {
     setFilter(query);
   };
+  const renderHeader = () => {
+    return (
+      <>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>Table List Users</span>
+          <span style={{ display: "flex", gap: 15 }}>
+            <Button icon={<ExportOutlined />} type="primary">
+              Export
+            </Button>
+
+            <Button icon={<CloudUploadOutlined />} type="primary">
+              Import
+            </Button>
+
+            <Button
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => setOpenModalCreate(true)}
+            >
+              Thêm mới
+            </Button>
+            <Button
+              type="ghost"
+              onClick={() => {
+                setFilter("");
+                setSortQuery("");
+              }}
+            >
+              <ReloadOutlined />
+            </Button>
+          </span>
+        </div>
+      </>
+    );
+  };
   return (
     <>
       <Row gutter={[20, 20]}>
@@ -119,11 +160,19 @@ const UserTable = () => {
         </Col>
         <Col span={24}>
           <Table
+            title={renderHeader}
             pagination={{
               current: current,
               pageSize: pageSize,
               total: total,
               showSizeChanger: true,
+              showTotal: (total, range) => {
+                return (
+                  <div>
+                    {range[0]} - {range[1]} trên {total} rows
+                  </div>
+                );
+              },
             }}
             className="def"
             columns={columns}
