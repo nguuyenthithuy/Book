@@ -1,65 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Table } from "antd";
 import InputSearch from "./InputSearch";
+import { render } from "react-dom";
+import { callListUser } from "../../../services/api";
 
 const UserTable = () => {
+  const [listUser, setListUser] = useState([]);
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    fetchUser();
+  }, [current, pageSize]);
+
+  const fetchUser = async () => {
+    const query = `current=${current}&pageSize=${pageSize}`;
+    const res = await callListUser(query);
+    // console.log(res);
+    if (res && res.data) {
+      setListUser(res.data.result);
+      setTotal(res.data.meta.total);
+    }
+  };
+  console.log(listUser);
+
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Id",
+      dataIndex: "_id",
       sorter: true,
     },
     {
-      title: "Chinese Score",
-      dataIndex: "chinese",
+      title: "Tên hiển thị",
+      dataIndex: "fullName",
       sorter: true,
     },
     {
-      title: "Math Score",
-      dataIndex: "math",
+      title: "Email",
+      dataIndex: "email",
       sorter: true,
     },
     {
-      title: "English Score",
-      dataIndex: "english",
+      title: "Số điện thoại",
+      dataIndex: "phone",
       sorter: true,
+    },
+    {
+      title: "Action",
+      render: (text, record, index) => {
+        return (
+          <>
+            <button>Delete</button>
+          </>
+        );
+      },
     },
   ];
-
-  let data = [
-    {
-      key: "1",
-      name: "John Brown",
-      chinese: 98,
-      math: 60,
-      english: 70,
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      chinese: 98,
-      math: 66,
-      english: 89,
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      chinese: 98,
-      math: 90,
-      english: 70,
-    },
-    {
-      key: "4",
-      name: "Jim Red",
-      chinese: 88,
-      math: 99,
-      english: 89,
-    },
-  ];
-  data = data.concat(data).concat(data).concat(data);
-  data = data.concat(data);
 
   const onChange = (pagination, filters, sorter, extra) => {
+    if (pagination && pagination.current !== current) {
+      setCurrent(pagination.current);
+    }
+    if (pagination && pagination.pageSize !== pageSize) {
+      setPageSize(pagination.pageSize);
+    }
     console.log("params", pagination, filters, sorter, extra);
   };
   return (
@@ -70,10 +75,15 @@ const UserTable = () => {
         </Col>
         <Col span={24}>
           <Table
-            pagination={{ current: 1, pageSize: 1, showSizeChanger: true }}
+            pagination={{
+              current: current,
+              pageSize: pageSize,
+              total: total,
+              showSizeChanger: true,
+            }}
             className="def"
             columns={columns}
-            dataSource={data}
+            dataSource={listUser}
             onChange={onChange}
           />
         </Col>
