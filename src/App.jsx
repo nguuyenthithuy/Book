@@ -16,12 +16,15 @@ import NotFound from "./components/Notfound";
 import AdminPage from "./pages/admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LayoutAdmin from "./components/admin/Layoutadmin";
+import UserTable from "./components/admin/User/UserTable";
 const Layout = () => {
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <div className="layout-app">
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 };
@@ -94,7 +97,11 @@ export default function App() {
         },
         {
           path: "user",
-          element: <ContactPage />,
+          element: (
+            <ProtectedRoute>
+              <UserTable />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "book",
