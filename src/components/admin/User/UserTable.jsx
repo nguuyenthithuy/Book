@@ -11,6 +11,10 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
+import UserModalCreate from "./UserModalCreate";
+import moment from "moment";
+import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
+
 const UserTable = () => {
   const [listUser, setListUser] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -21,6 +25,7 @@ const UserTable = () => {
   const [sortQuery, setSortQuery] = useState("");
   const [dataViewDetail, setDataViewDetail] = useState(null);
   const [openViewDetail, setOpenViewDetail] = useState(false);
+  const [openModalCreate, setOpenModalCreate] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -83,6 +88,14 @@ const UserTable = () => {
       title: "Số điện thoại",
       dataIndex: "phone",
       sorter: true,
+    },
+    {
+      title: "Ngày cập nhật",
+      dataIndex: "updatedAt",
+      sorter: true,
+      render: (text, record, index) => {
+        return <>{moment(record.updatedAt).format(FORMAT_DATE_DISPLAY)}</>;
+      },
     },
     {
       title: "Action",
@@ -182,6 +195,11 @@ const UserTable = () => {
           />
         </Col>
       </Row>
+      <UserModalCreate
+        openModalCreate={openModalCreate}
+        setOpenModalCreate={setOpenModalCreate}
+        fetchUser={fetchUser}
+      />
       <UserViewDetail
         setOpenViewDetail={setOpenViewDetail}
         openViewDetail={openViewDetail}
