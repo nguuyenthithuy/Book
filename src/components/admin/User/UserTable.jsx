@@ -3,6 +3,7 @@ import { Col, Row, Table } from "antd";
 import InputSearch from "./InputSearch";
 import { render } from "react-dom";
 import { callListUser } from "../../../services/api";
+import UserViewDetail from "./UserViewDetail";
 
 const UserTable = () => {
   const [listUser, setListUser] = useState([]);
@@ -12,6 +13,8 @@ const UserTable = () => {
   const [isLoading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [sortQuery, setSortQuery] = useState("");
+  const [dataViewDetail, setDataViewDetail] = useState(null);
+  const [openViewDetail, setOpenViewDetail] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -39,7 +42,26 @@ const UserTable = () => {
     {
       title: "Id",
       dataIndex: "_id",
-      sorter: true,
+      render: (text, record, index) => {
+        console.log("Check record", record);
+        return (
+          // <a href='#' onClick={() => {
+          //     setDataViewDetail(record);
+          //     setOpenViewDetail(true);
+          // }}>{record._id}</a>
+          <>
+            <a
+              href="#"
+              onClick={() => {
+                setDataViewDetail(record);
+                setOpenViewDetail(true);
+              }}
+            >
+              {record._id}
+            </a>
+          </>
+        );
+      },
     },
     {
       title: "Tên hiển thị",
@@ -111,6 +133,12 @@ const UserTable = () => {
           />
         </Col>
       </Row>
+      <UserViewDetail
+        setOpenViewDetail={setOpenViewDetail}
+        openViewDetail={openViewDetail}
+        dataViewDetail={dataViewDetail}
+        setDataViewDetail={setDataViewDetail}
+      />
     </>
   );
 };
