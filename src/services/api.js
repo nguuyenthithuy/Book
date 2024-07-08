@@ -43,3 +43,6 @@ export const callUpdateUser = (_id, fullName, phone) => {
 export const callListBook = (query) => {
   return axios.get(`/api/v1/book?${query}`);
 };
+export const callCategoryBook = () => {
+  return axios.get(`/api/v1/database/category`);
+};
