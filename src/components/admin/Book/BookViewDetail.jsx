@@ -1,8 +1,9 @@
 import { Badge, Descriptions, Divider, Drawer, Modal } from "antd";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Upload } from "antd";
-const UserViewDetail = (props) => {
+import { v4 as uuidv4 } from "uuid";
+const BookViewDetail = (props) => {
   const {
     setOpenViewDetail,
     openViewDetail,
@@ -28,32 +29,36 @@ const UserViewDetail = (props) => {
       reader.onerror = (error) => reject(error);
     });
 
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-2",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-3",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-4",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+  const [fileList, setFileList] = useState([]);
+  useEffect(() => {
+    console.log("check view Data", dataViewDetail);
+    if (dataViewDetail) {
+      let imgThumnail = {},
+        imgSlider = [];
+
+      if (dataViewDetail?.thumbnail) {
+        imgThumnail = {
+          uid: uuidv4(),
+          name: dataViewDetail.thumbnail,
+          url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${
+            dataViewDetail.thumbnail
+          }`,
+        };
+      }
+      if (dataViewDetail?.slider && dataViewDetail?.slider?.length > 0) {
+        dataViewDetail.slider.map((item) => {
+          console.log("item ", item);
+          imgSlider.push({
+            uid: uuidv4(),
+            name: item,
+            url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+          });
+        });
+      }
+      setFileList([imgThumnail, ...imgSlider]);
+      console.log("check, slider", imgSlider);
+    }
+  }, [dataViewDetail]);
 
   const handlePreview = async (file) => {
     console.log("check file", file);
@@ -124,4 +129,4 @@ const UserViewDetail = (props) => {
     </>
   );
 };
-export default UserViewDetail;
+export default BookViewDetail;

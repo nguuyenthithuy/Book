@@ -15,6 +15,9 @@ import UserModalCreate from "./BookModalCreate";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
 import UserModalUpdate from "./BookModalUpdate";
+import BookModalCreate from "./BookModalCreate";
+import BookModalUpdate from "./BookModalUpdate";
+import BookViewDetail from "./BookViewDetail";
 
 const BookTable = () => {
   const [listBook, setListBook] = useState([]);
@@ -211,18 +214,18 @@ const BookTable = () => {
           />
         </Col>
       </Row>
-      <UserModalCreate
+      <BookModalCreate
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate}
         fetchBook={fetchBook}
       />
-      <UserViewDetail
+      <BookViewDetail
         setOpenViewDetail={setOpenViewDetail}
         openViewDetail={openViewDetail}
         dataViewDetail={dataViewDetail}
         setDataViewDetail={setDataViewDetail}
       />
-      <UserModalUpdate
+      <BookModalUpdate
         openModalUpdate={openModalUpdate}
         setOpenModalUpdate={setOpenModalUpdate}
         dataUpdate={dataUpdate}
