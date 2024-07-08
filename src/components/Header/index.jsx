@@ -20,7 +20,7 @@ const Header = () => {
 
   const handleClickLogout = async () => {
     const res = await callLogOut();
-    console.log(res);
+    // console.log(res);
     if (res && res.data) {
       dispatch(doLogOutAction());
       message.success("Đăng xuất thành công");

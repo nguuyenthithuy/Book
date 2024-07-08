@@ -56,7 +56,7 @@ const UserTable = () => {
       title: "Id",
       dataIndex: "_id",
       render: (text, record, index) => {
-        console.log("Check record", record);
+        // console.log("Check record", record);
         return (
           // <a href='#' onClick={() => {
           //     setDataViewDetail(record);
@@ -135,7 +135,7 @@ const UserTable = () => {
           : `sort=-${sorter.field}`;
       setSortQuery(q);
     }
-    console.log("params", pagination, filters, sorter, extra);
+    // console.log("params", pagination, filters, sorter, extra);
   };
 
   const handleSearch = (query) => {

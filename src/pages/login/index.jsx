@@ -18,12 +18,12 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    console.log(values);
+    // console.log(values);
     const { username, password } = values;
     const res = await callLogin(username, password);
-    console.log(res);
+    // console.log(res);
     if (res && res.data) {
-      console.log("check res", res);
+      // console.log("check res", res);
 
       localStorage.setItem("access_token", res.data.access_token);
       dispatch(doLoginAction(res.data.user));

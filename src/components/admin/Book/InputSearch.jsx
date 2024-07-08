@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Form, Input, Row, theme } from "antd";
 
 const InputSearch = (props) => {
-  console.log(props);
+  // console.log(props);
   const { token } = theme.useToken();
   const [form] = Form.useForm();
 

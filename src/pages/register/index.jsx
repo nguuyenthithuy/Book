@@ -11,7 +11,7 @@ const Register = () => {
     setIsLoading(true);
     const res = await callRegister(fullName, email, password, phone);
     setIsLoading(false);
-    console.log(res);
+    // console.log(res);
     if (res?.data?._id) {
       message.success("Đăng kí tài khoản thành công");
       navigate("/login");

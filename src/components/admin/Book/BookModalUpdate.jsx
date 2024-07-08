@@ -17,7 +17,7 @@ const BookModalUpdate = (props) => {
     const { _id, fullName, phone } = values;
     setIsSubmit(true);
     const res = await callUpdateUser(_id, fullName, phone);
-    console.log("check res create", res);
+    // console.log("check res create", res);
     if (res && res.data) {
       message.success("Cập nhật user thành công");
       form.resetFields();

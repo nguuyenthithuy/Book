@@ -13,13 +13,14 @@ const BookViewDetail = (props) => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewTitle, setPreviewTitle] = useState("");
+ 
 
   const onClose = () => {
     setOpenViewDetail(false);
     setDataViewDetail(null);
   };
 
-  console.log(dataViewDetail);
+  // console.log(dataViewDetail);
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -31,7 +32,7 @@ const BookViewDetail = (props) => {
 
   const [fileList, setFileList] = useState([]);
   useEffect(() => {
-    console.log("check view Data", dataViewDetail);
+    // console.log("check view Data", dataViewDetail);
     if (dataViewDetail) {
       let imgThumnail = {},
         imgSlider = [];
@@ -56,12 +57,12 @@ const BookViewDetail = (props) => {
         });
       }
       setFileList([imgThumnail, ...imgSlider]);
-      console.log("check, slider", imgSlider);
+      // console.log("check, slider", imgSlider);
     }
   }, [dataViewDetail]);
 
   const handlePreview = async (file) => {
-    console.log("check file", file);
+    // console.log("check file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
