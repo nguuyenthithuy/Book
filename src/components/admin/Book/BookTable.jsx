@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "antd";
 import InputSearch from "./InputSearch";
 import { render } from "react-dom";
-import { callListUser } from "../../../services/api";
-import UserViewDetail from "./UserViewDetail";
+import { callListBook, callListUser } from "../../../services/api";
+import UserViewDetail from "./BookViewDetail";
 import {
   CloudUploadOutlined,
   DeleteTwoTone,
@@ -11,29 +11,29 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import UserModalCreate from "./UserModalCreate";
+import UserModalCreate from "./BookModalCreate";
 import moment from "moment";
 import { FORMAT_DATE_DISPLAY } from "../../../utils/constant";
-import UserModalUpdate from "./UesrModalUpdate";
+import UserModalUpdate from "./BookModalUpdate";
 
-const UserTable = () => {
-  const [listUser, setListUser] = useState([]);
+const BookTable = () => {
+  const [listBook, setListBook] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(2);
   const [total, setTotal] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
-  const [sortQuery, setSortQuery] = useState("");
+  const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
   const [dataViewDetail, setDataViewDetail] = useState(null);
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [dataUpdate, setDataUpdate] = useState(null);
   useEffect(() => {
-    fetchUser();
+    fetchBook();
   }, [current, pageSize, filter, sortQuery]);
 
-  const fetchUser = async () => {
+  const fetchBook = async () => {
     let query = `current=${current}&pageSize=${pageSize}`;
     if (filter) {
       query += `&${filter}`;
@@ -41,10 +41,10 @@ const UserTable = () => {
     if (sortQuery) {
       query += `&${sortQuery}`;
     }
-    const res = await callListUser(query);
+    const res = await callListBook(query);
     // console.log(res);
     if (res && res.data) {
-      setListUser(res.data.result);
+      setListBook(res.data.result);
       setTotal(res.data.meta.total);
     }
     setLoading(false);
@@ -77,18 +77,23 @@ const UserTable = () => {
       },
     },
     {
-      title: "Tên hiển thị",
-      dataIndex: "fullName",
+      title: "Tên sách",
+      dataIndex: "mainText",
       sorter: true,
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Thể loại",
+      dataIndex: "category",
       sorter: true,
     },
     {
-      title: "Số điện thoại",
-      dataIndex: "phone",
+      title: "Tác giả",
+      dataIndex: "author",
+      sorter: true,
+    },
+    {
+      title: "Giá tiền",
+      dataIndex: "price",
       sorter: true,
     },
     {
@@ -145,7 +150,7 @@ const UserTable = () => {
     return (
       <>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>Table List Users</span>
+          <span>Table List Books</span>
           <span style={{ display: "flex", gap: 15 }}>
             <Button icon={<ExportOutlined />} type="primary">
               Export
@@ -200,7 +205,7 @@ const UserTable = () => {
             }}
             className="def"
             columns={columns}
-            dataSource={listUser}
+            dataSource={listBook}
             onChange={onChange}
             loading={isLoading}
           />
@@ -209,7 +214,7 @@ const UserTable = () => {
       <UserModalCreate
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate}
-        fetchUser={fetchUser}
+        fetchBook={fetchBook}
       />
       <UserViewDetail
         setOpenViewDetail={setOpenViewDetail}
@@ -222,10 +227,10 @@ const UserTable = () => {
         setOpenModalUpdate={setOpenModalUpdate}
         dataUpdate={dataUpdate}
         setDataUpdate={setDataUpdate}
-        fetchUser={fetchUser}
+        fetchBook={fetchBook}
       />
     </>
   );
 };
 
-export default UserTable;
+export default BookTable;

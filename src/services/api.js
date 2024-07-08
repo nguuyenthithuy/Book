@@ -31,3 +31,15 @@ export const callCreateAUser = (fullName, password, email, phone) => {
     phone,
   });
 };
+export const callUpdateUser = (_id, fullName, phone) => {
+  return axios.put("/api/v1/user", {
+    _id,
+    fullName,
+    phone,
+  });
+};
+
+//  api book
+export const callListBook = (query) => {
+  return axios.get(`/api/v1/book?${query}`);
+};
