@@ -57,9 +57,9 @@ const BookModalCreate = (props) => {
 
   // console.log("mé", category);
   const onFinish = async (values) => {
-    console.log("check value", values);
-    console.log("check data thumnai", dataThumbnail);
-    console.log("check data slider", dataSlider);
+    // console.log("check value", values);
+    // console.log("check data thumnai", dataThumbnail);
+    // console.log("check data slider", dataSlider);
     // return;
     if (dataThumbnail.length === 0) {
       notification.error({
@@ -89,7 +89,7 @@ const BookModalCreate = (props) => {
       quantity,
       sold
     );
-    console.log("check res create", res);
+    // console.log("check res create", res);
     if (res && res.data) {
       message.success("Tạo mới sách thành công");
       form.resetFields();
@@ -143,7 +143,7 @@ const BookModalCreate = (props) => {
   };
 
   const handleUploadFileThumbnail = async ({ file, onSuccess, onError }) => {
-    console.log("check file ", file);
+    // console.log("check file ", file);
     const res = await callUploadBookImg(file);
     if (res && res.data) {
       setDataThumbnail({
@@ -151,12 +151,12 @@ const BookModalCreate = (props) => {
         name: res.data.fileUploaded,
       });
     }
-    console.log(res);
+    // console.log(res);
 
     onSuccess("ok");
   };
   const handleUploadFileSlider = async ({ file, onSuccess, onError }) => {
-    console.log("check file ", file);
+    // console.log("check file ", file);
     const res = await callUploadBookImg(file);
     if (res && res.data) {
       setDataSlider((dataSlider) => [
@@ -167,12 +167,12 @@ const BookModalCreate = (props) => {
         },
       ]);
     }
-    console.log(res);
+    // console.log(res);
 
     onSuccess("ok");
   };
-  console.log("check dataThumbnail", dataThumbnail);
-  console.log("check dataSlider", dataSlider);
+  // console.log("check dataThumbnail", dataThumbnail);
+  // console.log("check dataSlider", dataSlider);
 
   const handlePreview = async (file) => {
     getBase64(file.originFileObj, (url) => {
