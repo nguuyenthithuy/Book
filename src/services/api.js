@@ -80,3 +80,28 @@ export const callCreateABook = (
     sold,
   });
 };
+export const callUpdateBook = (
+  _id,
+  thumbnail,
+  slider,
+  mainText,
+  author,
+  price,
+  category,
+  quantity,
+  sold
+) => {
+  return axios.put(`/api/v1/book/${_id}`, {
+    thumbnail,
+    slider,
+    mainText,
+    author,
+    price,
+    category,
+    quantity,
+    sold,
+  });
+};
+export const callDeleteBook = (_id) => {
+  return axios.delete(`/api/v1/book/${_id}`);
+};

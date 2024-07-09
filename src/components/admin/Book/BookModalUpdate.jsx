@@ -13,8 +13,7 @@ import {
 } from "antd";
 import {
   callCategoryBook,
-  callCreateABook,
-  callCreateAUser,
+  callUpdateBook,
   callUploadBookImg,
 } from "../../../services/api";
 import { useEffect, useState } from "react";
@@ -101,6 +100,7 @@ const BookModalUpdate = (props) => {
     };
   }, [dataUpdate]);
 
+  console.log("check thumnail", dataThumbnail);
   // console.log("mé", category);
   const onFinish = async (values) => {
     // console.log("check value", values);
@@ -121,11 +121,12 @@ const BookModalUpdate = (props) => {
       });
       return;
     }
-    const { mainText, author, price, category, quantity, sold } = values;
-    const thumbnail = dataThumbnail.name;
+    const { _id, mainText, author, price, category, quantity, sold } = values;
+    const thumbnail = dataThumbnail[0].name;
     const slider = dataSlider.map((item) => item.name);
     setIsSubmit(true);
-    const res = await callCreateABook(
+    const res = await callUpdateBook(
+      _id,
       thumbnail,
       slider,
       mainText,
@@ -135,12 +136,12 @@ const BookModalUpdate = (props) => {
       quantity,
       sold
     );
-    console.log("check res create", res);
     if (res && res.data) {
-      message.success("Tạo mới sách thành công");
+      message.success("Cập nhật sách thành công");
       form.resetFields();
       setDataSlider([]);
       setDataThumbnail([]);
+      setInitForm(null);
       setOpenModalUpdate(false);
       await props.fetchBook();
     } else {
@@ -250,13 +251,13 @@ const BookModalUpdate = (props) => {
   return (
     <>
       <Modal
-        title="Thêm mới Book"
+        title="Cập nhật Book"
         open={openModalUpdate}
         onOk={() => {
           form.submit();
         }}
         onCancel={handleCancel}
-        okText={"Tạo mới"}
+        okText={"Cập nhật"}
         cancelText={"Hủy"}
         confirmLoading={isSubmit}
         width={"50vw"}
@@ -272,6 +273,12 @@ const BookModalUpdate = (props) => {
           form={form}
         >
           <Row gutter={15}>
+            <Col hidden>
+              <Form.Item labelCol={{ span: 24 }} label="Id" name="_id">
+                <Input />
+              </Form.Item>
+            </Col>
+
             <Col span={12}>
               <Form.Item
                 labelCol={{ span: 24 }}
