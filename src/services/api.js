@@ -59,3 +59,24 @@ export const callUploadBookImg = (fileImg) => {
     },
   });
 };
+export const callCreateABook = (
+  thumbnail,
+  slider,
+  mainText,
+  author,
+  price,
+  category,
+  quantity,
+  sold
+) => {
+  return axios.post("/api/v1/book", {
+    thumbnail,
+    slider,
+    mainText,
+    author,
+    price,
+    category,
+    quantity,
+    sold,
+  });
+};

@@ -13,6 +13,7 @@ import {
 } from "antd";
 import {
   callCategoryBook,
+  callCreateABook,
   callCreateAUser,
   callUploadBookImg,
 } from "../../../services/api";
@@ -59,23 +60,50 @@ const BookModalCreate = (props) => {
     console.log("check value", values);
     console.log("check data thumnai", dataThumbnail);
     console.log("check data slider", dataSlider);
-    return;
-    // const { fullName, password, email, phone } = values;
-    // setIsSubmit(true);
-    // const res = await callCreateAUser(fullName, password, email, phone);
-    // console.log("check res create", res);
-    // if (res && res.data) {
-    //   message.success("Tạo mới user thành công");
-    //   form.resetFields();
-    //   setOpenModalCreate(false);
-    //   await props.fetchBook();
-    // } else {
-    //   notification.error({
-    //     message: "Đã có lỗi xảy ra",
-    //     description: res.message,
-    //   });
-    // }
-    // setIsSubmit(false);
+    // return;
+    if (dataThumbnail.length === 0) {
+      notification.error({
+        message: "Lỗi validate",
+        description: "Vui lòng upload ảnh thumbnail",
+      });
+      return;
+    }
+    if (dataSlider.length === 0) {
+      notification.error({
+        message: "Lỗi validate",
+        description: "Vui lòng upload ảnh slider",
+      });
+      return;
+    }
+    const { mainText, author, price, category, quantity, sold } = values;
+    const thumbnail = dataThumbnail.name;
+    const slider = dataSlider.map((item) => item.name);
+    setIsSubmit(true);
+    const res = await callCreateABook(
+      thumbnail,
+      slider,
+      mainText,
+      author,
+      price,
+      category,
+      quantity,
+      sold
+    );
+    console.log("check res create", res);
+    if (res && res.data) {
+      message.success("Tạo mới sách thành công");
+      form.resetFields();
+      setDataSlider([]);
+      setDataThumbnail([]);
+      setOpenModalCreate(false);
+      await props.fetchBook();
+    } else {
+      notification.error({
+        message: "Đã có lỗi xảy ra",
+        description: res.message,
+      });
+    }
+    setIsSubmit(false);
     // console.log("Success:", values);
   };
   // const handleChange = (value) => {
